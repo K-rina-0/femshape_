@@ -136,7 +136,6 @@
   margin-bottom: 0.5rem;
 }
 .hero-overlay-text .hero-ctas {
-  justify-content: center;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -170,7 +169,7 @@
     line-height: 1.7; margin-bottom: 2.5rem;
     font-weight: 300;
   }
-  .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .hero-ctas { display: flex; flex-direction: row; gap: 1rem; flex-wrap: wrap; }
   .btn-primary {
     background: linear-gradient(135deg, var(--rose-deep), #b04060);
     color: white; border: none; cursor: pointer;
@@ -548,7 +547,7 @@
 
   @media (max-width: 768px) {
     .hero-content { grid-template-columns: 1fr; text-align: center; gap: 2rem; }
-    .hero-ctas { justify-content: center; }
+    .hero-ctas { justify-content: center; flex-direction: row; }
     .product-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
     .hero-stat-row { justify-content: center; }
     nav { padding: 0 1rem; }
