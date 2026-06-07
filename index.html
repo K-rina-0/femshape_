@@ -483,10 +483,12 @@ font-size: 2.5rem !important;
   .prod-modal-grid {
     display: grid; grid-template-columns: 1fr 1fr;
   }
-  .prod-modal-img {
-    aspect-ratio: 3/4; overflow: hidden; background: var(--rose-pale);
-    border-radius: 6px 0 0 6px;
-  }
+   .prod-modal-img {
+  min-height: 400px;
+  overflow: hidden;
+  background: var(--rose-pale);
+  border-radius: 6px 0 0 6px;
+}
   .prod-modal-img img { width: 100%; height: 100%; object-fit: cover; }
   .prod-modal-info { padding: 2.5rem 2rem; }
   .prod-modal-ref { font-size: 0.72rem; color: var(--text-light); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.5rem; }
