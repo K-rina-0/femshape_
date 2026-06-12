@@ -644,6 +644,12 @@ font-size: 2.5rem !important;
   @media (max-width: 480px) {
   .product-grid { grid-template-columns: 1fr; }
   }
+ nav {
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+nav.hidden {
+  transform: translateY(-100%);
+}
 </style>
 </head>
 <body>
@@ -1694,6 +1700,17 @@ function showToast(msg) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2800);
 }
+ let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  const current = window.scrollY;
+  const nav = document.querySelector('nav');
+  if (current > lastScroll && current > 80) {
+    nav.classList.add('hidden');
+  } else {
+    nav.classList.remove('hidden');
+  }
+  lastScroll = current;
+});
 </script>
 </body>
 </html>
