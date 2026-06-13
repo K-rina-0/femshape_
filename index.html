@@ -847,7 +847,7 @@ nav.hidden {
       </h1>
       <div class="hero-ctas">
        <button class="btn-primary" onclick="filterCat('todas'); scrollToProducts()">Ver Colección</button>
-        <button class="btn-outline" onclick="filterCat('post-quirurgica')">Post-Quirúrgica</button>
+       <button class="btn-outline" onclick="showContact()">Contáctanos</button>
       </div>
     </div>
   </div>
@@ -937,7 +937,47 @@ nav.hidden {
   <div class="cart-items" id="cartItems"></div>
   <div class="cart-footer" id="cartFooter"></div>
 </div>
+<div id="contactPage" style="display:none; max-width:700px; margin:4rem auto; padding:2rem;">
+  
+  <button onclick="hideContact()" style="background:none;border:none;cursor:pointer;color:var(--rose-deep);font-size:0.85rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:2rem;display:flex;align-items:center;gap:0.5rem;">
+    ← Volver
+  </button>
 
+  <h2 style="font-family:'Playfair Display',serif;font-size:2rem;color:#7a4a5a;margin-bottom:0.5rem;">Contáctanos</h2>
+  <p style="color:var(--text-light);font-size:0.9rem;margin-bottom:2.5rem;">Estamos para ayudarte. Escríbenos por WhatsApp o Instagram.</p>
+
+  <!-- CANALES -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2.5rem;">
+    
+    <a href="https://wa.me/573125137286" target="_blank" style="text-decoration:none;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:1.5rem;display:flex;align-items:center;gap:1rem;transition:all 0.2s;" onmouseover="this.style.borderColor='#25D366'" onmouseout="this.style.borderColor='var(--border)'">
+      <span style="font-size:2rem;">💬</span>
+      <div>
+        <div style="font-weight:600;color:var(--charcoal);font-size:0.9rem;">WhatsApp</div>
+        <div style="color:var(--text-light);font-size:0.8rem;">+57 312 5137286</div>
+      </div>
+    </a>
+
+    <a href="https://instagram.com/Femshape_Store" target="_blank" style="text-decoration:none;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:1.5rem;display:flex;align-items:center;gap:1rem;transition:all 0.2s;" onmouseover="this.style.borderColor='#E1306C'" onmouseout="this.style.borderColor='var(--border)'">
+      <span style="font-size:2rem;">📸</span>
+      <div>
+        <div style="font-weight:600;color:var(--charcoal);font-size:0.9rem;">Instagram</div>
+        <div style="color:var(--text-light);font-size:0.8rem;">@Femshape_Store</div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- HORARIOS -->
+  <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:1.5rem;">
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.1rem;color:#7a4a5a;margin-bottom:1.2rem;">Horarios de Atención</h3>
+    <div style="display:flex;flex-direction:column;gap:0.6rem;font-size:0.88rem;">
+      <div style="display:flex;justify-content:space-between;padding-bottom:0.6rem;border-bottom:1px solid var(--border);"><span style="font-weight:600;color:var(--charcoal);">Lunes – Viernes</span><span style="color:var(--text-light);">8:00 AM – 4:00 PM</span></div>
+      <div style="display:flex;justify-content:space-between;padding-bottom:0.6rem;border-bottom:1px solid var(--border);"><span style="font-weight:600;color:var(--charcoal);">Sábado</span><span style="color:var(--text-light);">8:00 AM – 12:00 PM</span></div>
+      <div style="display:flex;justify-content:space-between;"><span style="font-weight:600;color:var(--charcoal);">Domingo</span><span style="color:#c4607a;font-weight:500;">Cerrado</span></div>
+    </div>
+  </div>
+
+</div>
 <!-- FOOTER -->
 <footer>
   <div class="footer-brand">
@@ -1001,7 +1041,22 @@ function switchSGTab(tab, btn) {
     renderProducts(currentFilter);
   }
 }
+function showContact() {
+  document.getElementById('contactPage').style.display = 'block';
+  document.getElementById('heroSection').style.display = 'none';
+  document.getElementById('catBar').style.display = 'none';
+  document.getElementById('productsSection').style.display = 'none';
+  document.querySelector('.section-header').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
+function hideContact() {
+  document.getElementById('contactPage').style.display = 'none';
+  document.getElementById('heroSection').style.display = 'block';
+  document.getElementById('catBar').style.display = 'flex';
+  document.getElementById('productsSection').style.display = 'block';
+  document.querySelector('.section-header').style.display = 'block';
+}
 function searchProducts(query) {
   const grid = document.getElementById('productGrid');
   const q = query.toLowerCase().trim();
@@ -1560,9 +1615,7 @@ function selectSize(s, btn) {
 
 function quickAdd(e, id) {
   e.stopPropagation();
-  const p = PRODUCTS.find(x => x.id === id);
-  if (!p) return;
-  addItem(p, 'Talla única');
+  openProd(id);
 }
 
 function addToCart(id) {
