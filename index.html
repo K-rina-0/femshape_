@@ -201,10 +201,17 @@ footer { background: #1e1015 !important; color: rgba(255,255,255,0.6) !important
   display: block;
 }
 .hero-overlay-text {
-  padding: 0.6rem 1rem;
-  width: 85%;
-  bottom: 0.5rem;
-}
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(4px);
+  border-radius: 16px;
+  padding: 1.2rem 2.5rem;
+  width: max-content;
 }
 .hero-overlay-text .hero-title {
   color: #633953;
