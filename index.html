@@ -1667,14 +1667,21 @@ function closeCart() {
 }
 
 function checkout() {
+  if (!cart.length) return;
+
   const user = DB.getCurrentUser();
-  if (!user) {
-    closeCart();
-    showToast('Inicia sesión para finalizar tu compra');
-    setTimeout(() => showAuthModal(), 800);
-    return;
-  }
-  showToast('✓ Pedido enviado por WhatsApp — ¡Gracias, ' + user.name.split(' ')[0] + '!');
+  const nombre = user ? user.name.split(' ')[0] : 'Cliente';
+
+  const items = cart.map(item =>
+    `• ${item.name} | Talla: ${item.size} | Color: ${item.color || '—'} | Cant: ${item.qty} | ${fmtPrice(item.price * item.qty)}`
+  ).join('\n');
+
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+
+  const mensaje = `¡Hola! Soy ${nombre} y quiero hacer el siguiente pedido:%0A%0A${encodeURIComponent(items)}%0A%0A*Total: ${fmtPrice(total)}*`;
+
+  window.open(`https://wa.me/573125137286?text=${mensaje}`, '_blank');
+
   cart = [];
   DB.saveCart(cart);
   renderCart();
