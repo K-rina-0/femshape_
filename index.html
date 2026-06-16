@@ -71,11 +71,8 @@
   color: var(--text);
   min-height: 100vh;
 }
-  @media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) {
   :root {
-  .cat-bar { background: #2a1a22 !important; }
-.cat-btn { color: rgba(255,255,255,0.65) !important; }
-.cat-btn:hover, .cat-btn.active { color: var(--rose) !important; border-bottom-color: var(--rose) !important; }
     --rose: #e8789a;
     --rose-deep: #e8789a;
     --rose-soft: #3d2030;
@@ -89,24 +86,47 @@
     --white: #1e1218;
     --border: #3d2535;
     --shadow: rgba(0,0,0,0.4);
-    nav { background: rgba(210,185,195,0.96) !important; border-bottom-color: #d4a8b4 !important; }
-nav .nav-links a { color: #4A3B45 !important; }
-nav .btn-icon { color: #4A3B45 !important;
-footer { background: #1e1015 !important; color: rgba(255,255,255,0.6) !important; }
-.footer-bottom { background: #150a0e !important; color: rgba(255,255,255,0.35) !important; }
-.footer-col h4 { color: rgba(255,255,255,0.9) !important; }
-.footer-col ul li a { color: rgba(255,255,255,0.6) !important; }
-.footer-brand p { color: rgba(255,255,255,0.6) !important; 
-  .auth-modal-box * { color: #4A3B45 !important; }
-.form-input { background: white !important; color: #4A3B45 !important; border-color: #d4a8b4 !important; }
-.auth-tab.active { color: var(--rose-deep) !important; border-bottom-color: var(--rose-deep) !important; }
-  .section-title {
-  color: #f0dde5 !important;
-  text-shadow: none !important;
-}
-} } }
   }
-
+  body {
+    background: linear-gradient(135deg, #1a0d12 0%, #12080e 30%, #1a1025 60%, #1a1210 100%);
+  }
+  nav {
+    background: rgba(20,10,15,0.96) !important;
+    border-bottom-color: #3d2535 !important;
+  }
+  nav .nav-links a { color: #f0dde5 !important; }
+  nav .btn-icon { color: #f0dde5 !important; }
+  .cat-bar { background: #2a1a22 !important; }
+  .cat-btn { color: rgba(255,255,255,0.65) !important; }
+  .cat-btn:hover, .cat-btn.active {
+    color: var(--rose) !important;
+    border-bottom-color: var(--rose) !important;
+  }
+  .section-title { color: #f0dde5 !important; text-shadow: none !important; }
+  .section-header { background: transparent !important; }
+  .product-card { background: #1e1218 !important; }
+  footer {
+    background: #1e1015 !important;
+    color: rgba(255,255,255,0.6) !important;
+  }
+  .footer-bottom {
+    background: #150a0e !important;
+    color: rgba(255,255,255,0.35) !important;
+  }
+  .footer-col h4 { color: rgba(255,255,255,0.9) !important; }
+  .footer-col ul li a { color: rgba(255,255,255,0.6) !important; }
+  .footer-brand p { color: rgba(255,255,255,0.6) !important; }
+  .auth-modal-box * { color: #4A3B45 !important; }
+  .form-input {
+    background: white !important;
+    color: #4A3B45 !important;
+    border-color: #d4a8b4 !important;
+  }
+  .auth-tab.active {
+    color: var(--rose-deep) !important;
+    border-bottom-color: var(--rose-deep) !important;
+  }
+}
 /* COLOR SELECTOR */
 .color-selector { display: flex; gap: 0.6rem; margin-bottom: 1.5rem; align-items: center; flex-wrap: wrap; }
 .color-swatch {
