@@ -722,6 +722,7 @@ nav.hidden {
   transform: translateY(-100%);
 }
 </style>
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <!-- MODAL GUÍA DE TALLAS -->
@@ -1143,16 +1144,14 @@ function selectColor(index) {
     s.classList.toggle('active', i === index);
   });
 }
-
+// ============ SUPABASE CLIENT ============
+const SUPABASE_URL = 'https://bbdjhcligrdymtitoewk.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_QQGdTy3yTWEixlh5f1WXsg_6HOFF63q';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // ============ DATABASE (localStorage) ============
 const DB = {
-  getUsers: () => JSON.parse(localStorage.getItem('fs_users') || '[]'),
-  saveUsers: (u) => localStorage.setItem('fs_users', JSON.stringify(u)),
   getCart: () => JSON.parse(localStorage.getItem('fs_cart') || '[]'),
   saveCart: (c) => localStorage.setItem('fs_cart', JSON.stringify(c)),
-  getCurrentUser: () => JSON.parse(localStorage.getItem('fs_current') || 'null'),
-  setCurrentUser: (u) => localStorage.setItem('fs_current', JSON.stringify(u)),
-  clearCurrentUser: () => localStorage.removeItem('fs_current'),
 };
 
 // ============ PRODUCTS DATA ============
@@ -1457,10 +1456,10 @@ let selectedSize = null;
 let selectedColor = null;
 
 // ============ INIT ============
-window.onload = () => {
+window.onload = async () => {
   renderProducts('todas');
   renderCart();
-  updateAuth();
+  await updateAuth();
 };
 
 // ============ PRODUCTS ============
@@ -1732,11 +1731,11 @@ function closeCart() {
   document.getElementById('overlay').classList.remove('active');
 }
 
-function checkout() {
+async function checkout() {
   if (!cart.length) return;
 
-  const user = DB.getCurrentUser();
-  const nombre = user ? user.name.split(' ')[0] : 'Cliente';
+  const { data: { session } } = await supabase.auth.getSession();
+  const nombre = session ? (session.user.user_metadata?.name || 'Cliente').split(' ')[0] : 'Cliente';
 
   const items = cart.map(item =>
     `• ${item.name} | Talla: ${item.size} | Color: ${item.color || '—'} | Cant: ${item.qty} | ${fmtPrice(item.price * item.qty)}`
@@ -1755,9 +1754,9 @@ function checkout() {
 }
 
 // ============ AUTH ============
-function showAuthModal() {
-  const user = DB.getCurrentUser();
-  if (user) return;
+async function showAuthModal() {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) return;
   document.getElementById('authModal').classList.add('open');
   document.getElementById('overlay').classList.add('active');
 }
@@ -1788,45 +1787,49 @@ function doLogin() {
   showToast('¡Bienvenida, ' + user.name.split(' ')[0] + '!');
 }
 
-function doRegister() {
+async function doRegister() {
   const name = document.getElementById('regName').value.trim();
   const email = document.getElementById('regEmail').value.trim();
   const pass = document.getElementById('regPass').value;
   const pass2 = document.getElementById('regPass2').value;
   const msg = document.getElementById('regMsg');
+
   if (!name || !email || !pass) { msg.textContent = 'Completa todos los campos'; return; }
   if (pass !== pass2) { msg.textContent = 'Las contraseñas no coinciden'; return; }
   if (pass.length < 6) { msg.textContent = 'Contraseña mínimo 6 caracteres'; return; }
-  const users = DB.getUsers();
-  if (users.find(u => u.email === email)) { msg.textContent = 'Este correo ya está registrado'; return; }
-  const user = { name, email, password: pass, createdAt: new Date().toISOString() };
-  users.push(user);
-  DB.saveUsers(users);
-  DB.setCurrentUser(user);
-  updateAuth();
+
+  msg.textContent = 'Creando cuenta...';
+  const { data, error } = await supabase.auth.signUp({
+    email, password: pass,
+    options: { data: { name: name } }
+  });
+
+  if (error) { msg.textContent = error.message; return; }
+
+  await updateAuth();
   closeAuthModal();
   showToast('¡Cuenta creada! Bienvenida, ' + name.split(' ')[0]);
 }
-
-function updateAuth() {
-  const user = DB.getCurrentUser();
+ async function updateAuth() {
+  const { data: { session } } = await supabase.auth.getSession();
   const loginBtn = document.getElementById('loginBtn');
   const pill = document.getElementById('userPill');
   const pillName = document.getElementById('userPillName');
-  if (user) {
+
+  if (session) {
     loginBtn.style.display = 'none';
     pill.classList.add('show');
-    pillName.textContent = user.name.split(' ')[0];
+    pillName.textContent = (session.user.user_metadata?.name || 'Usuaria').split(' ')[0];
   } else {
     loginBtn.style.display = '';
     pill.classList.remove('show');
   }
 }
 
-function logout(e) {
+async function logout(e) {
   e.stopPropagation();
-  DB.clearCurrentUser();
-  updateAuth();
+  await supabase.auth.signOut();
+  await updateAuth();
   showToast('Sesión cerrada');
 }
 
